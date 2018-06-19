@@ -56,7 +56,7 @@ public class ChangePassword extends AppCompatActivity {
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 final String email = user.getEmail();
                 final AuthCredential credential = EmailAuthProvider.getCredential(email,oldpassword);
-                if (newpassword1.equals(newpassword2)){
+                if (newpassword1.equals(newpassword2) && (!oldpassword.equals(null))){
                     user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -82,10 +82,14 @@ public class ChangePassword extends AppCompatActivity {
                             }
                         }
                     });
+
                     startActivity(new Intent(ChangePassword.this,LoginInterfaceActivity.class));
                  }
-                 else{
+                 else if(!newpassword1.equals(newpassword2)){
                     result.setText("Your passwords are not the same in two field");
+                }
+                else if(oldpassword.equals(null)){
+                    result.setText("Your must enter you current password.");
                 }
             }
         });
